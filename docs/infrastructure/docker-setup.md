@@ -31,10 +31,12 @@ my-azevedo/
 ├── docker/                 # Arquivos dedicados de infraestrutura
 │   ├── nginx/
 │   │   └── default.conf    # VirtualHost configurado no /etc/nginx/conf.d/
-│   └── php/                # (Em desenvolvimento: Dockerfile customizado)
+│   └── php/
+│       └── Dockerfile      # Imagem customizada PHP 8.3-FPM + extensões (pdo_pgsql, gd, bcmath, zip)
 ├── docs/                   # Documentação do projeto
 ├── src/                    # Código da aplicação (montado em /var/www)
-│   └── index.html          # Arquivo inicial de validação
+│   ├── index.html          # Arquivo inicial de validação estática
+│   └── index.php           # Arquivo inicial de validação do PHP-FPM (phpinfo)
 ├── docker-compose.yml      # Definição e orquestração dos serviços locais
 └── CONTEXT.md              # Diretrizes de mentoria e objetivos de aprendizagem
 ```
@@ -47,9 +49,17 @@ my-azevedo/
 - **Imagem Base:** `nginx:alpine`
 - **Portas:** `80:80`
 - **Volumes:**
-  - `./docker/nginx/default.conf` ➔ `/etc/nginx/conf.d/default.conf` (não sobrescreve o `/etc/nginx/nginx.conf` principal).
-  - `./src` ➔ `/var/www` (ponto de montagem raiz para servir estáticos e arquivos PHP).
-- **Rede:** `blog-network` (driver `bridge`).
+  - `./docker/nginx/default.conf` ➔ `/etc/nginx/conf.d/default.conf`
+  - `./src` ➔ `/var/www`
+- **Comunicação FastCGI:** Passa requisições `\.php$` para o serviço `app:9000`.
+- **Rede:** `blog-network`.
+
+### 3.2 PHP 8.3-FPM (`php-my-azevedo` / serviço `app`)
+- **Build:** `./docker/php/Dockerfile` (Base: `php:8.3-fpm-alpine`).
+- **Extensões do PHP:** `pdo`, `pdo_pgsql`, `pgsql`, `bcmath`, `gd`, `zip`.
+- **Ferramentas:** Composer embutido via multi-stage build.
+- **Volumes:** `./src` ➔ `/var/www`.
+- **Rede:** `blog-network`.
 
 ---
 

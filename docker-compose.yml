@@ -9,6 +9,15 @@ services:
       - ./src:/var/www
     networks:
       - blog-network
+  app:
+    container_name: php-my-azevedo
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    volumes:
+      - ./src:/var/www
+    networks:
+      - blog-network
 
 networks:
   blog-network: 

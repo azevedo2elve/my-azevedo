@@ -36,3 +36,20 @@ Utilizar a imagem oficial `nginx:alpine` e injetar a configuração do site atra
 * **Vantagens:** Consumo mínimo de memória e CPU (~5-10MB RAM); suporte nativo a FastCGI de alto rendimento.
 * **Desvantagens:** O Nginx não processa scripts PHP sozinho, exigindo um container separado para o PHP-FPM.
 
+---
+
+## ADR 003: Imagem Customizada PHP-FPM (Alpine) com Multi-Stage Composer
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-07
+
+### Contexto
+O Laravel exige extensões PHP específicas que não acompanham a imagem oficial padrão (`php:alpine`), como `pdo_pgsql` para suporte ao PostgreSQL e `gd` para manipulação de mídias. Além disso, precisamos do Composer disponível para instalação de dependências.
+
+### Decisão
+Criar um `Dockerfile` customizado em `docker/php/Dockerfile` baseado em `php:8.3-fpm-alpine`, instalando as extensões via `docker-php-ext-install` e copiando o binário do Composer via Multi-stage build (`COPY --from=composer:latest`).
+
+### Consequências e Trade-offs
+* **Vantagens:** Ambiente de desenvolvimento 100% idêntico entre colaboradores; extensões necessárias pré-compiladas; presença do Composer sem poluir a máquina host.
+* **Desvantagens:** O primeiro build (`docker compose up --build`) demora um pouco mais devido à compilação das extensões do PHP no Alpine.
+

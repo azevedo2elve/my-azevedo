@@ -18,7 +18,7 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
 
 - **Sprint 1: Infraestrutura Docker do Zero**
   - [x] Etapa 1: Setup do Nginx, rede bridge customizada, isolamento de diretórios e validação de bind mounts estáticos.
-  - [ ] Etapa 2: Dockerfile do PHP-FPM, extensões necessárias e comunicação FastCGI via porta 9000.
+  - [x] Etapa 2: Dockerfile do PHP-FPM, extensões necessárias e comunicação FastCGI via porta 9000.
   - [ ] Etapa 3: Banco de dados PostgreSQL com persistência de volumes.
   - [ ] Etapa 4: Cache Redis e validação da malha de rede entre containers.
   - [ ] Etapa 5: Inicialização e instalação limpa do Laravel dentro dos containers.
