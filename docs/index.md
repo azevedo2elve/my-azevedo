@@ -30,8 +30,8 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
 - **Sprint 2: Modelagem do Banco de Dados PostgreSQL & Arquitetura de Migrations**
   - [x] Etapa 1: Validação do ambiente e teste de execução de `php artisan migrate` no container `app`.
     * 🌿 *Branch:* `feature/database-setup-validation`
-  - [ ] Etapa 2: Desenho do Modelo Entidade-Relacionamento (DER) para as entidades do Blog (`users`, `posts`, `categories`, `tags`).
-    * 🌿 *Branch sugerida:* `feature/blog-der-modeling`
+  - [x] Etapa 2: Desenho do Modelo Entidade-Relacionamento (DER) para as entidades do Blog (`users`, `posts`, `categories`, `tags`).
+    * 🌿 *Branch:* `feature/blog-der-modeling`
   - [ ] Etapa 3: Criação das Migrations no Laravel aplicando chaves estrangeiras, índices e restrições de integridade no PostgreSQL.
     * 🌿 *Branch sugerida:* `feature/blog-schema-migrations`
   - [ ] Etapa 4: Configuração de Seeders e Factories para população de dados de testes reais.

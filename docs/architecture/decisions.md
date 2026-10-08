@@ -130,3 +130,69 @@ O Laravel dentro do container PHP precisa se comunicar com a instância do Postg
 * **Vantagens:** Comunicação 100% isolada e segura pela rede interna `blog-network`; eliminação da necessidade de expor o IP público ou `localhost` interno do container.
 * **Desvantagens:** Comandos do Artisan exigem a sintaxe `docker compose exec app` (mitigado pelo uso de alias no terminal).
 
+---
+
+## ADR 008: Modelo Entidade-Relacionamento (DER) para o Blog e Convenções de Tabelas Pivô N:N
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-08
+
+### Contexto
+Precisamos projetar as entidades fundamentais da aplicação (`users`, `posts`, `categories`, `tags`), definindo suas chaves primárias, estrangeiras e o relacionamento N:N (Muitos para Muitos) entre postagens e etiquetas.
+
+### Decisão
+1. **Relacionamentos 1:N:** Adicionar as FKs `user_id` e `category_id` na tabela `posts` (lado N da relação).
+2. **Relacionamento N:N:** Criar a tabela intermediária (pivot) denominada **`post_tag`**, seguindo a convenção oficial do Laravel (nomes das entidades no singular, em ordem alfabética, unidos por underline).
+3. **Diagrama Mermaid (DER):**
+
+```mermaid
+erDiagram
+    users ||--o{ posts : "escreve (1:N)"
+    categories ||--o{ posts : "categoriza (1:N)"
+    posts ||--o{ post_tag : "possui"
+    tags ||--o{ post_tag : "pertence a"
+
+    users {
+        bigint id PK
+        string name
+        string email UK
+        string password
+        timestamp created_at
+    }
+
+    categories {
+        bigint id PK
+        string name
+        string slug UK
+        timestamp created_at
+    }
+
+    posts {
+        bigint id PK
+        bigint user_id FK
+        bigint category_id FK
+        string title
+        string slug UK
+        text body
+        string status "draft | published"
+        timestamp published_at
+        timestamp created_at
+    }
+
+    tags {
+        bigint id PK
+        string name
+        string slug UK
+        timestamp created_at
+    }
+
+    post_tag {
+        bigint post_id PK, FK
+        bigint tag_id PK, FK
+    }
+```
+
+### Consequências e Trade-offs
+* **Vantagens:** Normalização até a 3ª Forma Normal (3FN); facilidade de consulta com Eloquent ORM (`$post->tags()`); integridade referencial mantida via PostgreSQL.
+* **Desvantagens:** Exige criação de migration específica para a tabela pivô `post_tag`.
+
