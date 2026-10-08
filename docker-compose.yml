@@ -33,6 +33,13 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - blog-network
+  redis:
+    container_name: redis-my-azevedo
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - blog-network
 
 networks:
   blog-network: 

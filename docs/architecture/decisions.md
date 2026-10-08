@@ -72,3 +72,22 @@ Precisamos de um banco de dados relacional robusto para o blog/portfólio. Os da
 * **Vantagens:** Alta performance no WSL2/Linux; persistência de dados garantida entre reinicializações do Docker; conformidade com boas práticas de segurança OWASP (secrets fora do Git).
 * **Desvantagens:** Alterações posteriores nas credenciais do `.env` exigem o reset manual do volume nomeado (`docker compose down -v`), pois o script de entrada do Postgres só processa credenciais em volumes novos/vazios.
 
+---
+
+## ADR 005: Redis 7 para Cache In-Memory e Instalação de Extensão via PECL com Otimização de Camadas Docker
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-08
+
+### Contexto
+Para acelerar o tempo de resposta do blog e gerenciar sessões/queues sem onerar o banco PostgreSQL, precisamos de uma solução in-memory. Além disso, a instalação de extensões de terceiros via PECL no Alpine exige ferramentas de compilação C (`$PHPIZE_DEPS`).
+
+### Decisão
+1. Adicionar o container `redis:7-alpine` na porta `6379`.
+2. Instalar a extensão nativa do `redis` no PHP via `pecl install redis && docker-php-ext-enable redis`.
+3. Unificar a instalação de pacotes `$PHPIZE_DEPS`, extensões nativas e PECL em uma única instrução `RUN` encadeada com `&&` no `Dockerfile`.
+
+### Consequências e Trade-offs
+* **Vantagens:** Otimização drasticamente do tamanho da imagem Docker gerando menos camadas (*layers*); leitura de dados em microsegundos via memória RAM; suporte nativo no Laravel.
+* **Desvantagens:** Como não mapeamos volume no Redis nesta etapa, dados de cache na memória somem se o container for destruído (comportamento desejável para cache em dev).
+

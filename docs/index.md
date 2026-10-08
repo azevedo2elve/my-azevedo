@@ -20,6 +20,6 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
   - [x] Etapa 1: Setup do Nginx, rede bridge customizada, isolamento de diretórios e validação de bind mounts estáticos.
   - [x] Etapa 2: Dockerfile do PHP-FPM, extensões necessárias e comunicação FastCGI via porta 9000.
   - [x] Etapa 3: Banco de dados PostgreSQL com persistência de volumes e integração via PDO.
-  - [ ] Etapa 4: Cache Redis e validação da malha de rede entre containers.
+  - [x] Etapa 4: Cache Redis, extensão via PECL e validação da malha de rede entre containers.
   - [ ] Etapa 5: Inicialização e instalação limpa do Laravel dentro dos containers.
 

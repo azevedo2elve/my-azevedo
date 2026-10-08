@@ -1,18 +1,14 @@
 <?php
 
-$host = getenv('DB_HOST') ?: 'db';
-$db   = getenv('DB_DATABASE') ?: 'my_azevedo_db';
-$user = getenv('DB_USERNAME') ?: 'postgres';
-$pass = getenv('DB_PASSWORD') ?: 'postgres';
-$port = getenv('DB_PORT') ?: '5432';
-
 try {
-    $dsn = "pgsql:host=$host;port=$port;dbname=$db;";
-    $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-    
+    $redis = new Redis();
+    $redis->connect('redis', 6379);
 
-    echo "<h1>Conexão com o PostgreSQL realizada com sucesso! 🎉</h1>";
-} catch (PDOException $e) {
-    echo "<h1>Erro ao conectar ao PostgreSQL:</h1>";
+    $redis->set("teste_chave", "Redis funcionando com sucesso no Docker! 🚀");
+    $mensagem = $redis->get("teste_chave");
+
+    echo "<h1>" . $mensagem . "</h1>";
+} catch (Exception $e) {
+    echo "<h1>Erro ao conectar ao Redis:</h1>";
     echo "<p>" . $e->getMessage() . "</p>";
 }

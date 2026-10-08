@@ -56,8 +56,8 @@ my-azevedo/
 
 ### 3.2 PHP 8.3-FPM (`php-my-azevedo` / serviço `app`)
 - **Build:** `./docker/php/Dockerfile` (Base: `php:8.3-fpm-alpine`).
-- **Extensões do PHP:** `pdo`, `pdo_pgsql`, `pgsql`, `bcmath`, `gd`, `zip`.
-- **Ferramentas:** Composer embutido via multi-stage build.
+- **Extensões do PHP:** `pdo`, `pdo_pgsql`, `pgsql`, `bcmath`, `gd`, `zip`, `redis` (compilada via PECL).
+- **Ferramentas:** Composer embutido via multi-stage build e pacotes de compilação `$PHPIZE_DEPS`.
 - **Injeção de Ambiente:** Injeta variáveis do `.env` local (`env_file: - .env`).
 - **Volumes:** `./src` ➔ `/var/www`.
 - **Rede:** `blog-network`.
@@ -67,6 +67,12 @@ my-azevedo/
 - **Portas:** `5432:5432` (exposto para clientes como DBeaver / TablePlus).
 - **Variáveis de Ambiente:** Lidas do `.env` (`POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`).
 - **Persistência de Dados:** Volume nomeado `postgres_data` mapeado em `/var/lib/postgresql/data` (Driver `local`).
+- **Rede:** `blog-network`.
+
+### 3.4 Redis 7 (`redis-my-azevedo` / serviço `redis`)
+- **Imagem Base:** `redis:7-alpine`
+- **Portas:** `6379:6379`
+- **Uso no Projeto:** Cache em memória RAM para postagens e gerenciamento de sessões/filas.
 - **Rede:** `blog-network`.
 
 ---
