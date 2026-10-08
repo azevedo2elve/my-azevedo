@@ -32,8 +32,8 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
     * 🌿 *Branch:* `feature/database-setup-validation`
   - [x] Etapa 2: Desenho do Modelo Entidade-Relacionamento (DER) para as entidades do Blog (`users`, `posts`, `categories`, `tags`).
     * 🌿 *Branch:* `feature/blog-der-modeling`
-  - [ ] Etapa 3: Criação das Migrations no Laravel aplicando chaves estrangeiras, índices e restrições de integridade no PostgreSQL.
-    * 🌿 *Branch sugerida:* `feature/blog-schema-migrations`
+  - [x] Etapa 3: Criação das Migrations no Laravel aplicando chaves estrangeiras, índices e restrições de integridade no PostgreSQL.
+    * 🌿 *Branch:* `feature/blog-schema-migrations`
   - [ ] Etapa 4: Configuração de Seeders e Factories para população de dados de testes reais.
     * 🌿 *Branch sugerida:* `feature/blog-factories-seeders`
   - [ ] Etapa 5: Validação da camada de Cache com Redis integrando com a leitura de postagens via Eloquent ORM.

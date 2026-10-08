@@ -196,3 +196,23 @@ erDiagram
 * **Vantagens:** Normalização até a 3ª Forma Normal (3FN); facilidade de consulta com Eloquent ORM (`$post->tags()`); integridade referencial mantida via PostgreSQL.
 * **Desvantagens:** Exige criação de migration específica para a tabela pivô `post_tag`.
 
+---
+
+## ADR 009: Schema das Migrations do Blog com Restrições de Integridade e Chaves Primárias Compostas
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-08
+
+### Contexto
+Precisamos implementar as migrations no Laravel para a criação física das tabelas no PostgreSQL (`categories`, `posts`, `tags`, `post_tag`), aplicando regras rígidas de validação e integridade de dados direto no banco de dados.
+
+### Decisão
+1. **Integridade Referencial:** Aplicar `->constrained()->cascadeOnDelete()` em todas as chaves estrangeiras (`user_id`, `category_id`, `post_id`, `tag_id`), garantindo exclusão em cascata se um registro pai for removido.
+2. **Campos Únicos & Indexados:** Aplicar `->unique()` em todas as colunas `slug` para acelerar buscas e proibir duplicatas nas URLs.
+3. **Chave Primária Composta Pivô:** Definir `$table->primary(['post_id', 'tag_id']);` na tabela `post_tag` para otimizar espaço de armazenamento e impedir vinculações duplicadas da mesma tag no mesmo post.
+4. **Estado Padrão de Publicação:** Utilizar `$table->string('status')->default('draft')` prevenindo que posts não finalizados fiquem públicos acidentalmente.
+
+### Consequências e Trade-offs
+* **Vantagens:** Máxima consistência e velocidade de consulta no PostgreSQL; eliminação de registros órfãos por exclusão em cascata.
+* **Desvantagens:** Ordem estrita de execução das migrations (a tabela `posts` precisa rodar após `users` e `categories` por conta das FKs).
+
