@@ -21,5 +21,7 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
   - [x] Etapa 2: Dockerfile do PHP-FPM, extensões necessárias e comunicação FastCGI via porta 9000.
   - [x] Etapa 3: Banco de dados PostgreSQL com persistência de volumes e integração via PDO.
   - [x] Etapa 4: Cache Redis, extensão via PECL e validação da malha de rede entre containers.
-  - [ ] Etapa 5: Inicialização e instalação limpa do Laravel dentro dos containers.
+  - [x] Etapa 5: Inicialização e instalação limpa do Laravel 11/12/13 dentro dos containers com permissões e rotas Nginx.
+  
+🎉 **SPRINT 1 CONCLUÍDA COM SUCESSO!** Toda a infraestrutura Docker (Nginx, PHP 8.3-FPM, PostgreSQL 16, Redis 7 e Laravel) está 100% operacional.
 

@@ -91,3 +91,24 @@ Para acelerar o tempo de resposta do blog e gerenciar sessões/queues sem onerar
 * **Vantagens:** Otimização drasticamente do tamanho da imagem Docker gerando menos camadas (*layers*); leitura de dados em microsegundos via memória RAM; suporte nativo no Laravel.
 * **Desvantagens:** Como não mapeamos volume no Redis nesta etapa, dados de cache na memória somem se o container for destruído (comportamento desejável para cache em dev).
 
+---
+
+## ADR 006: Instalação Limpa do Laravel 11/12/13, Roteamento Nginx (Front Controller) e Modelo de Permissões (Dev vs Prod)
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-08
+
+### Contexto
+Precisamos instalar o framework Laravel sem depender de ferramentas instaladas na máquina host, garantir o isolamento da raiz pública (`public/`) no Nginx e resolver as permissões de escrita de cache/log (`storage/` e `bootstrap/cache/`).
+
+### Decisão
+1. **Instalação via Container:** Executar o `composer create-project` através do `docker compose exec app`.
+2. **Exposição Segura no Nginx:** Alterar o `root` do Nginx para `/var/www/public` (protegendo `.env` e código do servidor) e adotar a diretiva `try_files $uri $uri/ /index.php?$query_string;` (Front Controller Pattern).
+3. **Estratégia de Permissões de Escrita:**
+   - **Desenvolvimento Local:** Uso do `chmod -R 777 src/storage src/bootstrap/cache` para evitar bloqueios de I/O em *bind mounts* entre o sistema do host e o container.
+   - **Produção (OWASP Security Standard):** Proibido uso de `777`. Utilizar atribuição do usuário do sistema `chown -R www-data:www-data` combinado com permissões restritas `775`/`755`.
+
+### Consequências e Trade-offs
+* **Vantagens:** Proteção total dos arquivos sensíveis contra acessos HTTP diretos; flexibilidade de rotas controladas pelo Laravel; agilidade no desenvolvimento local.
+* **Desvantagens:** Exige conscientização do time sobre a diferença de comandos de permissão entre ambientes (dev `chmod` vs prod `chown`).
+

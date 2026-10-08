@@ -103,4 +103,9 @@ docker compose down -v
   * *Sintoma:* O container do Postgres falha na autenticação mesmo com a senha correta no `.env`.
   * *Causa:* O script de entrypoint do PostgreSQL no Docker só inicializa credenciais na primeira execução com volume 100% vazio. Se um volume antigo existir, o Postgres ignora as novas variáveis do `.env`.
   * *Solução:* Resetar o volume nomeado rodando `docker compose down -v` e subir novamente com `docker compose up -d`.
+* **Erro de Permissão no Laravel (`tempnam(): file created in system's temporary directory`):**
+  * *Sintoma:* O Symfony/Laravel lança uma exceção de permissão negada ao tentar criar arquivos temporários de cache ou log em `storage/` ou `bootstrap/cache/`.
+  * *Causa:* O processo do PHP-FPM dentro do container roda sob o usuário do sistema web (`www-data` ou `nobody`) e não tem privilégios de escrita nos diretórios criados no host.
+  * *Solução Local (Dev):* `chmod -R 777 src/storage src/bootstrap/cache`
+  * *Diferença para Produção (Segurança OWASP):* Em ambiente local de dev com bind mounts, o `chmod 777` libera leitura/escrita para qualquer usuário resolver rápido. **Em Produção**, o `chmod 777` é uma falha de segurança grave! Deve-se usar o `chown -R www-data:www-data storage bootstrap/cache` (alterando o dono do arquivo) combinado com permissões restritas como `775` ou `755`, garantindo que apenas o usuário do webserver/PHP consiga alterar esses diretórios.
 

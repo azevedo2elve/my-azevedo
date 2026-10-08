@@ -73,11 +73,11 @@ A documentação do repositório foi construída de forma modular para registrar
 
 ## 🎯 Status do Projeto (Sprint 1 - Infraestrutura)
 
-- [x] **Nginx:** Configurado como proxy reverso e servidor estático.
-- [x] **PHP 8.3-FPM:** Containerização customizada via Dockerfile com extensões `pdo_pgsql`, `bcmath`, `gd`, `zip` e Composer.
-- [ ] **PostgreSQL:** Instalação e volume de persistência.
-- [ ] **Redis:** Camada de cache em memória.
-- [ ] **Laravel:** Instalação e inicialização da aplicação no container.
+- [x] **Nginx:** Configurado como proxy reverso, isolamento de `public/` e Front Controller.
+- [x] **PHP 8.3-FPM:** Containerização customizada via Dockerfile com extensões `pdo_pgsql`, `bcmath`, `gd`, `zip`, `redis` (PECL) e Composer.
+- [x] **PostgreSQL 16:** Instalação, variáveis via `.env` e volume de persistência.
+- [x] **Redis 7:** Camada de cache e sessões in-memory.
+- [x] **Laravel:** Instalação e inicialização completa da aplicação no container.
 
 ---
 
