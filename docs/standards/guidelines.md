@@ -34,3 +34,17 @@ Orientações de engenharia de software seguidas no desenvolvimento do projeto *
 - A documentação deve ser tratada como código de primeira classe (*Docs as Code*).
 - Toda funcionalidade ou etapa de infraestrutura completada deve refletir uma atualização nos arquivos dentro de `/docs/`.
 
+---
+
+## 4. Estratégia de Versionamento Git (Feature Branching)
+
+1. **A branch `main` é sagrada:** Ela armazena o código de produção limpo, estável e testado.
+2. **Feature Branches por Tarefa (`feature/nome-da-tarefa`):**
+   - Para cada nova etapa/funcionalidade, crie uma branch derivada da `main`.
+   - *Padrão de Nomenclatura:* `feature/descricao-curta-em-kebab-case` (ex: `feature/database-setup-validation`).
+3. **Fluxo de Integração:**
+   - Trabalhe e faça commits atômicos na branch da feature.
+   - Valide o funcionamento do código e atualize a documentação em `/docs/`.
+   - Efetue o merge da feature branch para a `main`.
+
+

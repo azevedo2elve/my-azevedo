@@ -112,3 +112,21 @@ Precisamos instalar o framework Laravel sem depender de ferramentas instaladas n
 * **Vantagens:** Proteção total dos arquivos sensíveis contra acessos HTTP diretos; flexibilidade de rotas controladas pelo Laravel; agilidade no desenvolvimento local.
 * **Desvantagens:** Exige conscientização do time sobre a diferença de comandos de permissão entre ambientes (dev `chmod` vs prod `chown`).
 
+---
+
+## ADR 007: Resolução de Nomes por DNS do Docker para Conexão Laravel-PostgreSQL e Execução de Migrations via CLI
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-08
+
+### Contexto
+O Laravel dentro do container PHP precisa se comunicar com a instância do PostgreSQL 16 para executar as migrations de banco de dados.
+
+### Decisão
+1. Definir a variável `DB_HOST=db` no `src/.env`, aproveitando a resolução automática de nomes por DNS fornecida pelo driver `bridge` do Docker Compose.
+2. Executar os comandos do Artisan diretamente via ponte do Docker Compose (`docker compose exec app php artisan migrate`).
+
+### Consequências e Trade-offs
+* **Vantagens:** Comunicação 100% isolada e segura pela rede interna `blog-network`; eliminação da necessidade de expor o IP público ou `localhost` interno do container.
+* **Desvantagens:** Comandos do Artisan exigem a sintaxe `docker compose exec app` (mitigado pelo uso de alias no terminal).
+

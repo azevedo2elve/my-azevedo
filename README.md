@@ -71,13 +71,19 @@ A documentação do repositório foi construída de forma modular para registrar
 
 ---
 
-## 🎯 Status do Projeto (Sprint 1 - Infraestrutura)
+## 🎯 Status do Projeto
 
+### Sprint 1 - Infraestrutura Docker (Concluída 🎉)
 - [x] **Nginx:** Configurado como proxy reverso, isolamento de `public/` e Front Controller.
 - [x] **PHP 8.3-FPM:** Containerização customizada via Dockerfile com extensões `pdo_pgsql`, `bcmath`, `gd`, `zip`, `redis` (PECL) e Composer.
 - [x] **PostgreSQL 16:** Instalação, variáveis via `.env` e volume de persistência.
 - [x] **Redis 7:** Camada de cache e sessões in-memory.
 - [x] **Laravel:** Instalação e inicialização completa da aplicação no container.
+
+### Sprint 2 - Modelagem de Dados & Backend (Próxima)
+- [ ] **Migrations & DER:** Modelagem Entidade-Relacionamento das tabelas do Blog (`posts`, `categories`, `tags`, `users`).
+- [ ] **Seeders & Factories:** População de dados relacioanais de teste.
+- [ ] **Integração Redis:** Camada de cache com Eloquent ORM.
 
 ---
 
