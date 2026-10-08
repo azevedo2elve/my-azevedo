@@ -216,3 +216,22 @@ Precisamos implementar as migrations no Laravel para a criação física das tab
 * **Vantagens:** Máxima consistência e velocidade de consulta no PostgreSQL; eliminação de registros órfãos por exclusão em cascata.
 * **Desvantagens:** Ordem estrita de execução das migrations (a tabela `posts` precisa rodar após `users` e `categories` por conta das FKs).
 
+---
+
+## ADR 010: Geração de Dados Fictícios com Factories (Faker) e Associação Automática em Seeders N:N
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-08
+
+### Contexto
+Precisamos de um ambiente de desenvolvimento populado com dados realistas para testar consultas, paginações e relacionamentos entre postagens, autores, categorias e etiquetas sem cadastrar manualmente dados no banco.
+
+### Decisão
+1. **Factories Otimizadas:** Utilizar a biblioteca `fake()` combinada com `Str::slug()` para simular títulos, slugs únicos e parágrafos de texto.
+2. **Declaração de Relacionamento Eloquent N:N:** Adicionar o método `belongsToMany(Tag::class)` na Model `Post.php`.
+3. **Povoamento Encadeado em Seeder:** Estruturar o `DatabaseSeeder.php` para criar registros pais (`categories`, `tags`, `users`) e encadear a criação de 20 posts atribuindo aleatoriamente chaves estrangeiras e relacionamentos de tags pivô via `$post->tags()->attach()`.
+
+### Consequências e Trade-offs
+* **Vantagens:** População de dados instantânea e reproduzível com um único comando (`php artisan db:seed`); validação prática da tabela pivô `post_tag` no PostgreSQL.
+* **Desvantagens:** Exige manutenção das Factories caso o esquema de colunas da migration mude no futuro.
+

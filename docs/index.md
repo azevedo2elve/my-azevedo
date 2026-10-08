@@ -34,8 +34,8 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
     * 🌿 *Branch:* `feature/blog-der-modeling`
   - [x] Etapa 3: Criação das Migrations no Laravel aplicando chaves estrangeiras, índices e restrições de integridade no PostgreSQL.
     * 🌿 *Branch:* `feature/blog-schema-migrations`
-  - [ ] Etapa 4: Configuração de Seeders e Factories para população de dados de testes reais.
-    * 🌿 *Branch sugerida:* `feature/blog-factories-seeders`
+  - [x] Etapa 4: Configuração de Seeders e Factories para população de dados de testes reais.
+    * 🌿 *Branch:* `feature/blog-factories-seeders`
   - [ ] Etapa 5: Validação da camada de Cache com Redis integrando com a leitura de postagens via Eloquent ORM.
     * 🌿 *Branch sugerida:* `feature/redis-eloquent-cache`
 
