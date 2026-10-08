@@ -58,7 +58,15 @@ my-azevedo/
 - **Build:** `./docker/php/Dockerfile` (Base: `php:8.3-fpm-alpine`).
 - **Extensões do PHP:** `pdo`, `pdo_pgsql`, `pgsql`, `bcmath`, `gd`, `zip`.
 - **Ferramentas:** Composer embutido via multi-stage build.
+- **Injeção de Ambiente:** Injeta variáveis do `.env` local (`env_file: - .env`).
 - **Volumes:** `./src` ➔ `/var/www`.
+- **Rede:** `blog-network`.
+
+### 3.3 PostgreSQL 16 (`db-my-azevedo` / serviço `db`)
+- **Imagem Base:** `postgres:16-alpine`
+- **Portas:** `5432:5432` (exposto para clientes como DBeaver / TablePlus).
+- **Variáveis de Ambiente:** Lidas do `.env` (`POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`).
+- **Persistência de Dados:** Volume nomeado `postgres_data` mapeado em `/var/lib/postgresql/data` (Driver `local`).
 - **Rede:** `blog-network`.
 
 ---
@@ -74,20 +82,19 @@ docker compose up -d
 docker compose ps
 
 # Visualizar logs em tempo real
-docker compose logs -f nginx
+docker compose logs -f [nome_do_app]
 
-# Derrubar containers
-docker compose down
+# Derrubar containers e apagar volumes (reset total do banco)
+docker compose down -v
 ```
 
 ### Problemas Conhecidos e Soluções
 * **Conflito na porta 80 com Apache2 local (WSL2/Linux):**
   * *Sintoma:* `http://localhost` retorna a página padrão do Apache2 do host em vez do container.
   * *Causa:* O Apache2 nativo no host estava rodando e capturava as requisições antes do Docker.
-  * *Solução:* Parar e desabilitar o Apache nativo:
-    ```bash
-    sudo service apache2 stop
-    sudo update-rc.d apache2 disable
-    sudo ss -tulpn | grep :80 # Deve retornar vazio
-    ```
+  * *Solução:* Parar e desabilitar o Apache nativo (`sudo service apache2 stop`).
+* **Erro de Autenticação/Senha no PostgreSQL (`Password authentication failed`):**
+  * *Sintoma:* O container do Postgres falha na autenticação mesmo com a senha correta no `.env`.
+  * *Causa:* O script de entrypoint do PostgreSQL no Docker só inicializa credenciais na primeira execução com volume 100% vazio. Se um volume antigo existir, o Postgres ignora as novas variáveis do `.env`.
+  * *Solução:* Resetar o volume nomeado rodando `docker compose down -v` e subir novamente com `docker compose up -d`.
 

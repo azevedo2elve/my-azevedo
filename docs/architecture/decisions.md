@@ -53,3 +53,22 @@ Criar um `Dockerfile` customizado em `docker/php/Dockerfile` baseado em `php:8.3
 * **Vantagens:** Ambiente de desenvolvimento 100% idêntico entre colaboradores; extensões necessárias pré-compiladas; presença do Composer sem poluir a máquina host.
 * **Desvantagens:** O primeiro build (`docker compose up --build`) demora um pouco mais devido à compilação das extensões do PHP no Alpine.
 
+---
+
+## ADR 004: PostgreSQL 16 com Volume Nomeado para Persistência e Segurança de Credenciais via `.env`
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-08
+
+### Contexto
+Precisamos de um banco de dados relacional robusto para o blog/portfólio. Os dados não podem ser perdidos quando os containers forem encerrados (`docker compose down`) e as credenciais de acesso não devem ser expostas diretamente no controle de versão (`docker-compose.yml`).
+
+### Decisão
+1. Adotar a imagem oficial `postgres:16-alpine` fixando a versão estável.
+2. Utilizar um volume nomeado (`postgres_data`) com driver `local` mapeado em `/var/lib/postgresql/data` para máxima performance de I/O no WSL2 e isolamento contra corrupção de arquivos.
+3. Injetar variáveis de ambiente a partir do arquivo local `.env` (`POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`).
+
+### Consequências e Trade-offs
+* **Vantagens:** Alta performance no WSL2/Linux; persistência de dados garantida entre reinicializações do Docker; conformidade com boas práticas de segurança OWASP (secrets fora do Git).
+* **Desvantagens:** Alterações posteriores nas credenciais do `.env` exigem o reset manual do volume nomeado (`docker compose down -v`), pois o script de entrada do Postgres só processa credenciais em volumes novos/vazios.
+
