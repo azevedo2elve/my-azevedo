@@ -36,6 +36,8 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
     * 🌿 *Branch:* `feature/blog-schema-migrations`
   - [x] Etapa 4: Configuração de Seeders e Factories para população de dados de testes reais.
     * 🌿 *Branch:* `feature/blog-factories-seeders`
-  - [ ] Etapa 5: Validação da camada de Cache com Redis integrando com a leitura de postagens via Eloquent ORM.
-    * 🌿 *Branch sugerida:* `feature/redis-eloquent-cache`
+  - [x] Etapa 5: Validação da camada de Cache com Redis integrando com a leitura de postagens via Eloquent ORM.
+    * 🌿 *Branch:* `feature/redis-eloquent-cache`
+
+🎉 **SPRINT 2 CONCLUÍDA COM SUCESSO!** Modelagem relacional 3FN, Migrations, Seeders/Factories e Camada de Cache com Redis integradas com alta performance no Laravel.
 

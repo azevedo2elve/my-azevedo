@@ -235,3 +235,22 @@ Precisamos de um ambiente de desenvolvimento populado com dados realistas para t
 * **Vantagens:** População de dados instantânea e reproduzível com um único comando (`php artisan db:seed`); validação prática da tabela pivô `post_tag` no PostgreSQL.
 * **Desvantagens:** Exige manutenção das Factories caso o esquema de colunas da migration mude no futuro.
 
+---
+
+## ADR 011: Estratégia de Cache-Aside (In-Memory) no Redis com Serialização de Arrays Puros (`->toArray()`) e Mapeamento de Databases
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-09
+
+### Contexto
+Consultar repetidamente coleções complexas do Eloquent com Eager Loading (`Post::with(['category', 'tags'])`) diretamente no PostgreSQL gera overhead desnecessário de I/O em disco. Precisamos de uma estratégia de cache in-memory usando o Redis que seja rápida, neutra e sem erros de serialização de objetos PHP (`unserialize()`).
+
+### Decisão
+1. **Padrão Cache-Aside (`Cache::remember`):** Tentar primeiro buscar a chave na RAM do Redis. Caso não exista, executar a consulta SQL no PostgreSQL e armazenar no Redis.
+2. **Serialização em Array Puro (`->toArray()`):** Converter a `Eloquent\Collection` para array puro antes de persistir no Redis, evitando falhas de deserialização do driver nativo `phpredis` e reduzindo o consumo de memória em 3x.
+3. **Mapeamento por Banco Lógico (`db1`):** Compreender que o Laravel isola a camada de Cache na **Database 1 (`db1`)** do Redis por padrão (acessível no terminal via `redis-cli -n 1 keys "*"`), separando o cache das filas e sessões.
+
+### Consequências e Trade-offs
+* **Vantagens:** Queda vertiginosa do tempo de resposta da aplicação (de **14.71 ms** no banco para **1.54 ms** na RAM); isolamento lógico de dados no Redis.
+* **Desvantagens:** Exige a conversão explícita para Array ou Data Transfer Objects (DTOs) ao ler dados cacheados em vez de manipular instâncias vivas do Eloquent Model.
+

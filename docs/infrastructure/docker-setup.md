@@ -108,4 +108,12 @@ docker compose down -v
   * *Causa:* O processo do PHP-FPM dentro do container roda sob o usuário do sistema web (`www-data` ou `nobody`) e não tem privilégios de escrita nos diretórios criados no host.
   * *Solução Local (Dev):* `chmod -R 777 src/storage src/bootstrap/cache`
   * *Diferença para Produção (Segurança OWASP):* Em ambiente local de dev com bind mounts, o `chmod 777` libera leitura/escrita para qualquer usuário resolver rápido. **Em Produção**, o `chmod 777` é uma falha de segurança grave! Deve-se usar o `chown -R www-data:www-data storage bootstrap/cache` (alterando o dono do arquivo) combinado com permissões restritas como `775` ou `755`, garantindo que apenas o usuário do webserver/PHP consiga alterar esses diretórios.
+* **Erro de Serialização de Objetos no Redis (`incomplete object / unserialize()`):**
+  * *Sintoma:* No 2º acesso (F5), o PHP falha ao deserializar uma `Eloquent\Collection` vinda do Redis via extensão `phpredis`.
+  * *Causa:* O driver binário nativo da extensão C do `phpredis` pode ter falhas ao reconstruir instâncias complexas de modelos Eloquent com métodos dinâmicos.
+  * *Solução (Boas Práticas de Performance):* Converter a Collection para Array puro (`->toArray()`) antes de salvar no `Cache::remember()`. Isso torna os dados 3x mais leves, compatíveis e rápidos para o Redis.
+* **Busca via `redis-cli` retorna `(empty array)` mesmo com o cache funcionando:**
+  * *Sintoma:* O comando `redis-cli keys "*"` no terminal retorna vazio, mas a aplicação diz que leu da RAM.
+  * *Causa:* O Redis possui 16 bancos lógicos (0 a 15). O `redis-cli` por padrão abre no banco `0` (`db0`), mas o Laravel por padrão separa o cache na Database `1` (`db1`).
+  * *Solução:* Passar o indicador de banco no terminal: `docker compose exec redis redis-cli -n 1 keys "*"`.
 

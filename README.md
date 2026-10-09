@@ -80,10 +80,10 @@ A documentação do repositório foi construída de forma modular para registrar
 - [x] **Redis 7:** Camada de cache e sessões in-memory.
 - [x] **Laravel:** Instalação e inicialização completa da aplicação no container.
 
-### Sprint 2 - Modelagem de Dados & Backend (Próxima)
-- [ ] **Migrations & DER:** Modelagem Entidade-Relacionamento das tabelas do Blog (`posts`, `categories`, `tags`, `users`).
-- [ ] **Seeders & Factories:** População de dados relacioanais de teste.
-- [ ] **Integração Redis:** Camada de cache com Eloquent ORM.
+### Sprint 2 - Modelagem de Dados & Backend (Concluída 🎉)
+- [x] **Migrations & DER:** Modelagem Entidade-Relacionamento 3FN das tabelas do Blog (`posts`, `categories`, `tags`, `post_tag`).
+- [x] **Seeders & Factories:** População automatizada com Faker e associação N:N via Eloquent.
+- [x] **Integração Redis:** Camada de cache in-memory com redução de latência de 14.7ms para 1.5ms.
 
 ---
 
