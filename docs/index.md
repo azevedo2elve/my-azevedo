@@ -48,8 +48,8 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
     * 🌿 *Branch:* `feature/livewire-setup`
   - [x] Etapa 2: Implementação do Service Pattern para isolar a lógica de leitura do Blog e Cache (`PostService`).
     * 🌿 *Branch:* `feature/post-service-pattern`
-  - [ ] Etapa 3: Criação do Componente Livewire de Listagem de Posts com busca em tempo real, filtro por Categoria e Paginação.
-    * 🌿 *Branch sugerida:* `feature/livewire-post-list`
+  - [x] Etapa 3: Criação do Componente Livewire de Listagem de Posts com busca em tempo real, filtro por Categoria e Paginação.
+    * 🌿 *Branch:* `feature/livewire-post-list`
   - [ ] Etapa 4: Criação do Componente Livewire / View de Detalhes da Postagem (`PostDetail`) com incrementador de visualizações.
     * 🌿 *Branch sugerida:* `feature/livewire-post-detail`
   - [ ] Etapa 5: Validação do painel de administração básico / rotas protegidas e invalidação de cache Redis ao criar/editar posts.

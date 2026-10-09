@@ -291,3 +291,22 @@ Para evitar o antipadrão de "Controllers Gordos" ou componentes UI sobrecarrega
 * **Vantagens:** Separação clara de responsabilidades (SoC); reutilização do mesmo Service por múltiplos componentes ou APIs; alta testabilidade com mocks em testes unitários.
 * **Desvantagens:** Introdução de uma nova camada de abstração que exige disciplina do time para não ignorar a Service acessando Models diretamente no frontend.
 
+---
+
+## ADR 014: Componentização Reativa com Livewire 3 (Debounce, Paginação Reativa e Buscas Case-Insensitive no PostgreSQL)
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-09
+
+### Contexto
+Precisamos permitir que os visitantes do blog filtrem artigos por categorias e façam buscas por palavras-chave em tempo real, sem recarregar a página e sem gerar um volume excessivo de requisições ao servidor.
+
+### Decisão
+1. **Componente de Tela Cheia (`App\Livewire\PostList`):** Utilizar a trait `WithPagination` para gerenciar a paginação sem reloads e registrar o componente como rota principal.
+2. **Debounce em Busca Reativa (`wire:model.live.debounce.300ms`):** Aplicar um atraso intencional de 300ms na digitação para evitar disparos de AJAX desnecessários a cada tecla digitada.
+3. **Cláusula `ILIKE` no PostgreSQL:** Utilizar a instrução `where('title', 'ilike', ...)` na query do Eloquent para realizar buscas insensíveis a maiúsculas e minúsculas no banco relacional.
+
+### Consequências e Trade-offs
+* **Vantagens:** Redução de até 80% do tráfego de requisições no servidor graças ao debounce; experiência de usuário (UX) fluida de SPA mantendo o código 100% em PHP; buscas precisas no PostgreSQL.
+* **Desvantagens:** Necessidade de resetar a página (`$this->resetPage()`) ao alterar filtros para evitar a exibição de resultados vazios em páginas superiores.
+
