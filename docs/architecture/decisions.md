@@ -272,3 +272,22 @@ Precisamos construir uma interface de usuário moderna e reativa para o Blog (co
 * **Vantagens:** Produtividade extrema; zero necessidade de criar APIs REST / rotas duplicadas; SEO amigável com renderização inicial no servidor; reatividade em tempo real via AJAX/WebSockets transparentes.
 * **Desvantagens:** Cada interação reativa realiza pequenas requisições HTTP para o backend (mitigado pelo nosso uso de cache no Redis).
 
+---
+
+## ADR 013: Implementação do Service Pattern (`PostService`) para Desacoplamento da Camada de Dados e Cache
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-09
+
+### Contexto
+Para evitar o antipadrão de "Controllers Gordos" ou componentes UI sobrecarregados de responsabilidades no Livewire, precisamos isolar as regras de consulta SQL (PostgreSQL), busca in-memory (Redis) e expurgo de cache em uma camada dedicada.
+
+### Decisão
+1. **Criar a classe `App\Services\PostService`:** Centralizar a lógica de busca de posts publicados e gerenciamento de cache.
+2. **Encapsulamento de Cache:** O método `getPublishedPosts()` encapsula a estratégia de Cache-Aside (`Cache::remember`), garantindo que nem o Controller nem o Livewire precisem saber como o banco ou o Redis funcionam por baixo dos panos.
+3. **Invalidação de Cache Centralizada:** O método `clearPostCache()` isola a lógica de expurgo do Redis.
+
+### Consequências e Trade-offs
+* **Vantagens:** Separação clara de responsabilidades (SoC); reutilização do mesmo Service por múltiplos componentes ou APIs; alta testabilidade com mocks em testes unitários.
+* **Desvantagens:** Introdução de uma nova camada de abstração que exige disciplina do time para não ignorar a Service acessando Models diretamente no frontend.
+
