@@ -69,7 +69,7 @@
                             @endforeach
                         </div>
 
-                        <a href="#" class="inline-flex items-center text-xs font-semibold text-indigo-400 hover:text-indigo-300">
+                        <a href="{{ route('posts.detail', $post->slug) }}" class="inline-flex items-center text-xs font-semibold text-indigo-400 hover:text-indigo-300">
                             Ler artigo completo &rarr;
                         </a>
                     </div>

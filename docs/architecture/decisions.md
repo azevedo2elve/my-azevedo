@@ -310,3 +310,22 @@ Precisamos permitir que os visitantes do blog filtrem artigos por categorias e f
 * **Vantagens:** Redução de até 80% do tráfego de requisições no servidor graças ao debounce; experiência de usuário (UX) fluida de SPA mantendo o código 100% em PHP; buscas precisas no PostgreSQL.
 * **Desvantagens:** Necessidade de resetar a página (`$this->resetPage()`) ao alterar filtros para evitar a exibição de resultados vazios em páginas superiores.
 
+---
+
+## ADR 015: Componente de Leitura de Artigos (`PostDetail`), Implicit Model Binding por Slug e Rotas Nomeadas
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-09
+
+### Contexto
+Precisamos exibir o conteúdo completo dos artigos de forma segura, com URLs amigáveis e otimizadas para SEO (usando `slug` em vez de IDs numéricos), mantendo a manutenção de links desacoplada das URLs físicas.
+
+### Decisão
+1. **Implicit Model Binding por Slug:** Capturar o parâmetro `{slug}` no método `mount(string $slug)` do componente `App\Livewire\PostDetail`, executando `Post::where('slug', $slug)->firstOrFail()`.
+2. **Rotas Nomeadas (`route('post.detail', ...)`):** Registrar a rota com o nome `post.detail` para desacoplar a geração de links no Blade dos caminhos de URL físicos da aplicação.
+3. **Garantia de 404 e Segurança:** O uso do `firstOrFail()` garante a devida resposta HTTP 404 em caso de requisições a artigos inexistentes ou em rascunho.
+
+### Consequências e Trade-offs
+* **Vantagens:** URLs otimizadas para mecanismos de busca (SEO); facilidade de alteração de URLs globais sem quebrar os links das views; tratamento automático de exceções 404.
+* **Desvantagens:** Exige indexação prévia com chave `unique()` no banco de dados para evitar ambiguidades de busca por slug.
+
