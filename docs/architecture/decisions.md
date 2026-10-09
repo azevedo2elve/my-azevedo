@@ -254,3 +254,21 @@ Consultar repetidamente coleções complexas do Eloquent com Eager Loading (`Pos
 * **Vantagens:** Queda vertiginosa do tempo de resposta da aplicação (de **14.71 ms** no banco para **1.54 ms** na RAM); isolamento lógico de dados no Redis.
 * **Desvantagens:** Exige a conversão explícita para Array ou Data Transfer Objects (DTOs) ao ler dados cacheados em vez de manipular instâncias vivas do Eloquent Model.
 
+---
+
+## ADR 012: Adoção do Livewire 3 para Frontend Reativo sem Desacoplamento de SPA
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-09
+
+### Contexto
+Precisamos construir uma interface de usuário moderna e reativa para o Blog (com busca em tempo real e filtros sem recarregar a página), sem introduzir a complexidade de manter um projeto separado em React/Vue com autenticação via tokens JWT/Sanctum.
+
+### Decisão
+1. **Adotar o Livewire 3:** Utilizar o framework reativo do ecossistema Laravel que permite escrever componentes frontend orientados a eventos usando apenas PHP e templates Blade.
+2. **Layout Base Centralizado:** Criar a estrutura em `resources/views/layouts/app.blade.php` incluindo Tailwind CSS e as diretivas `@livewireStyles` / `@livewireScripts`.
+
+### Consequências e Trade-offs
+* **Vantagens:** Produtividade extrema; zero necessidade de criar APIs REST / rotas duplicadas; SEO amigável com renderização inicial no servidor; reatividade em tempo real via AJAX/WebSockets transparentes.
+* **Desvantagens:** Cada interação reativa realiza pequenas requisições HTTP para o backend (mitigado pelo nosso uso de cache no Redis).
+

@@ -41,3 +41,17 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
 
 🎉 **SPRINT 2 CONCLUÍDA COM SUCESSO!** Modelagem relacional 3FN, Migrations, Seeders/Factories e Camada de Cache com Redis integradas com alta performance no Laravel.
 
+---
+
+- **Sprint 3: Arquitetura de Controllers, Services, Livewire e Regras de Negócio do Blog**
+  - [x] Etapa 1: Instalação e configuração do Livewire 3 no container `app`.
+    * 🌿 *Branch:* `feature/livewire-setup`
+  - [ ] Etapa 2: Implementação do Service Pattern para isolar a lógica de leitura do Blog e Cache (`PostService`).
+    * 🌿 *Branch sugerida:* `feature/post-service-pattern`
+  - [ ] Etapa 3: Criação do Componente Livewire de Listagem de Posts com busca em tempo real, filtro por Categoria e Paginação.
+    * 🌿 *Branch sugerida:* `feature/livewire-post-list`
+  - [ ] Etapa 4: Criação do Componente Livewire / View de Detalhes da Postagem (`PostDetail`) com incrementador de visualizações.
+    * 🌿 *Branch sugerida:* `feature/livewire-post-detail`
+  - [ ] Etapa 5: Validação do painel de administração básico / rotas protegidas e invalidação de cache Redis ao criar/editar posts.
+    * 🌿 *Branch sugerida:* `feature/blog-admin-cache-invalidation`
+

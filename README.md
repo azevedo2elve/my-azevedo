@@ -85,6 +85,12 @@ A documentação do repositório foi construída de forma modular para registrar
 - [x] **Seeders & Factories:** População automatizada com Faker e associação N:N via Eloquent.
 - [x] **Integração Redis:** Camada de cache in-memory com redução de latência de 14.7ms para 1.5ms.
 
+### Sprint 3 - Frontend Reativo (Livewire) & Service Pattern (Próxima)
+- [ ] **Livewire 3 Setup:** Componentização reativa sem acoplamento de SPA.
+- [ ] **Service Pattern:** Camada de serviços (`PostService`) para desacoplar controllers do banco e do Redis.
+- [ ] **Componentes de Blog:** Listagem com busca em tempo real, paginação, filtros e detalhes do artigo.
+- [ ] **Invalidação de Cache:** Ciclo de vida do cache no Redis ao publicar/editar postagens.
+
 ---
 
 ### 📝 Licença
