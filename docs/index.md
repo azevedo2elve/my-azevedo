@@ -57,3 +57,46 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
 
 🎉 **SPRINT 3 CONCLUÍDA COM SUCESSO!** Componentização reativa com Livewire 3, Service Pattern (`PostService`), navegação por slugs amigáveis e invalidação automática de cache com Redis & Eloquent Observers implementados.
 
+---
+
+- **Sprint 4: Autenticação, Painel Administrativo Base & Gestão de Perfil Pessoal (About Me)**
+  - [ ] Etapa 1: Autenticação de Usuários Administrativos (Laravel Auth/Breeze + Middleware `auth` e layout do Painel Admin).
+    * 🌿 *Branch sugerida:* `feature/admin-auth-setup`
+  - [ ] Etapa 2: Modelagem do Banco e Migration para a entidade `profiles` (Cargo/Título, Biografia/Descrição, Idiomas, Formação Acadêmica, Cursos e Contatos).
+    * 🌿 *Branch sugerida:* `feature/profile-schema-migrations`
+  - [ ] Etapa 3: Componente Livewire de Edição do Perfil no Painel Administrativo.
+    * 🌿 *Branch sugerida:* `feature/admin-profile-crud`
+  - [ ] Etapa 4: Componente Livewire Público "Sobre Mim" (`AboutMe`) integrado com `ProfileService` e Cache-Aside no Redis.
+    * 🌿 *Branch sugerida:* `feature/public-about-me-component`
+  - [ ] Etapa 5: Invalidação de Cache do Perfil (`ProfileObserver`), Testes, ADRs e Documentação da Sprint 4.
+    * 🌿 *Branch sugerida:* `feature/profile-cache-invalidation-docs`
+
+---
+
+- **Sprint 5: Módulo de Stacks & Competências Técnicas (Tech Stacks)**
+  - [ ] Etapa 1: Modelagem do Banco e Migration para a tabela `stacks` (Nome, Categoria/Ícone, Nível de Experiência e Ordem de Exibição).
+    * 🌿 *Branch sugerida:* `feature/stacks-schema-migrations`
+  - [ ] Etapa 2: Factories e Seeders para povoamento inicial com as Stacks do desenvolvedor (PHP, Laravel, Docker, Postgres, Livewire, etc.).
+    * 🌿 *Branch sugerida:* `feature/stacks-factories-seeders`
+  - [ ] Etapa 3: Componente Livewire Admin para CRUD completo de Stacks (criação, listagem, edição, deleção e ordenação).
+    * 🌿 *Branch sugerida:* `feature/admin-stacks-crud`
+  - [ ] Etapa 4: Componente Livewire Público e Exibição Reativa de Stacks no Portfólio integrada com `StackService` e Redis Cache.
+    * 🌿 *Branch sugerida:* `feature/public-stacks-component`
+  - [ ] Etapa 5: Testes, ADRs e Documentação da Sprint 5.
+    * 🌿 *Branch sugerida:* `feature/stacks-docs`
+
+---
+
+- **Sprint 6: Módulo de Portfólio & Gerenciamento de Projetos (Projects Showcase)**
+  - [ ] Etapa 1: Modelagem Relacional e Migrations para `projects` (Título, Slug, Descrição, Capa/Imagem, Links de Demo/Repo, Tipo: Real/Acadêmico, Status: Concluído/Em Andamento) e tabela pivô `project_stack`.
+    * 🌿 *Branch sugerida:* `feature/projects-schema-migrations`
+  - [ ] Etapa 2: Upload e Gestão de Mídias/Imagens no Storage do Laravel (Upload de imagens de capas de projetos).
+    * 🌿 *Branch sugerida:* `feature/projects-media-upload`
+  - [ ] Etapa 3: Componente Livewire Admin para Cadastro e Gerenciamento Completo de Projetos.
+    * 🌿 *Branch sugerida:* `feature/admin-projects-crud`
+  - [ ] Etapa 4: Componente Livewire Público de Galeria de Projetos com Filtros Dinâmicos (Real/Acadêmico, Concluído/Em Andamento), Modal de Detalhes e Cache no Redis.
+    * 🌿 *Branch sugerida:* `feature/public-projects-showcase`
+  - [ ] Etapa 5: Automática Invalidação de Cache (`ProjectObserver`), Testes de Integração, ADRs e Documentação Final da Sprint 6.
+    * 🌿 *Branch sugerida:* `feature/projects-cache-invalidation-docs`
+
+

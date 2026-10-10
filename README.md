@@ -91,6 +91,20 @@ A documentação do repositório foi construída de forma modular para registrar
 - [x] **Componentes de Blog:** Listagem reativa (`PostList`) com busca em tempo real (debounce), paginação e filtro por categoria; exibição de detalhes (`PostDetail`) com navegação por slug amigável.
 - [x] **Invalidação Automática de Cache:** Automação de expurgo de cache no Redis acoplada ao ciclo de vida da model via Eloquent Observers (`PostObserver` com `#[ObservedBy]`).
 
+### Sprint 4 - Autenticação, Painel Administrativo & Perfil "Sobre Mim" (Próxima)
+- [ ] **Auth & Admin:** Sistema de login seguro com middleware `auth` para gerenciamento do portfólio.
+- [ ] **Módulo de Perfil:** Modelagem e edição de biografia, cargo/título, formação, cursos, idiomas e dados de contato.
+- [ ] **Exibição Pública & Cache:** Componente público "Sobre Mim" integrado ao Redis.
+
+### Sprint 5 - Stacks & Competências Técnicas
+- [ ] **CRUD de Stacks:** Gerenciamento administrativo de tecnologias e níveis de proficiência.
+- [ ] **Exibição Reativa:** Showcase de habilidades técnicas organizadas por categorias.
+
+### Sprint 6 - Gerenciamento de Projetos (Portfólio Showcase)
+- [ ] **Modelagem de Projetos:** Suporte a capas, URLs (demo/repo), tipo (Real/Acadêmico) e status (Concluído/Em Andamento).
+- [ ] **Upload de Mídias:** Gestão de imagens de capa no Laravel Storage.
+- [ ] **Galeria Reativa:** Galeria interativa de projetos com filtros dinâmicos e cache Redis.
+
 ---
 
 ### 📝 Licença
