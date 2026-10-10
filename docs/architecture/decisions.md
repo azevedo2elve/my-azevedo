@@ -329,3 +329,24 @@ Precisamos exibir o conteúdo completo dos artigos de forma segura, com URLs ami
 * **Vantagens:** URLs otimizadas para mecanismos de busca (SEO); facilidade de alteração de URLs globais sem quebrar os links das views; tratamento automático de exceções 404.
 * **Desvantagens:** Exige indexação prévia com chave `unique()` no banco de dados para evitar ambiguidades de busca por slug.
 
+---
+
+## ADR 016: Invalidação Automática de Cache Redis via Eloquent Observers e Attribute Registration (`#[ObservedBy]`)
+
+* **Status:** Aprovado / Implementado
+* **Data:** 2026-10-10
+
+### Contexto
+Com a introdução da camada de cache in-memory no Redis para a exibição das postagens do blog (ADR 011 e ADR 013), as alterações na base de dados (criação, edição ou exclusão de posts) deixariam o cache desatualizado (*stale cache*). Injetar chamadas manuais de expurgo de cache (`Cache::forget`) diretamente em Controllers ou Componentes Livewire geraria acoplamento indevido e duplicação de código.
+
+### Decisão
+1. **Criação do Eloquent Observer (`App\Observers\PostObserver`):** Encapsular a escuta dos eventos do ciclo de vida da Model `Post` e injetar o `App\Services\PostService` por Injeção de Dependência.
+2. **Escuta de Eventos de Ciclo de Vida (`saved` e `deleted`):** Mapear os métodos de ciclo de vida `saved(Post $post)` e `deleted(Post $post)` para invocar `$this->postService->clearPostCache()`, cobrindo ações de criação (`created`), atualização (`updated`) e remoção (`deleted`).
+3. **Registro Declarativo via Atributos PHP 8 (`#[ObservedBy]`):** Registrar o Observer diretamente no topo da classe da model `App\Models\Post` utilizando a sintaxe moderna do Laravel 11/12 `#[ObservedBy([PostObserver::class])]`, dispensando a necessidade de registros manuais no `EventServiceProvider`.
+4. **Proteção contra Atribuição em Massa (`$fillable`):** Declarar explicitamente os campos editáveis no modelo `Post` (`user_id`, `category_id`, `title`, `slug`, `body`, `status`, `published_at`) prevenindo `MassAssignmentException` e atendendo às diretrizes OWASP de segurança.
+
+### Consequências e Trade-offs
+* **Vantagens:** Invalidação de cache 100% automatizada e transparente em qualquer ponto da aplicação (Livewire, APIs, Seeders ou rotas de admin); desacoplamento completo entre a camada de dados e a camada de cache; código limpo e padronizado no PHP 8+.
+* **Desvantagens:** Operações em lote executadas diretamente no Query Builder (ex: `Post::where(...)->update(...)`) ignoram os eventos do Eloquent e exigem expurgo manual se forem utilizadas.
+
+

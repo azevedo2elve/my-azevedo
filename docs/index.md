@@ -52,6 +52,8 @@ A pasta `docs/` está organizada por domínios de conhecimento para facilitar a 
     * 🌿 *Branch:* `feature/livewire-post-list`
   - [x] Etapa 4: Criação do Componente Livewire / View de Detalhes da Postagem (`PostDetail`) com navegação por Slug e Rotas Nomeadas.
     * 🌿 *Branch:* `feature/livewire-post-detail`
-  - [ ] Etapa 5: Validação do painel de administração básico / rotas protegidas e invalidação de cache Redis ao criar/editar posts.
-    * 🌿 *Branch sugerida:* `feature/blog-admin-cache-invalidation`
+  - [x] Etapa 5: Invalidação automática de cache Redis via Eloquent Observers (`#[ObservedBy]`) ao criar/editar/excluir posts.
+    * 🌿 *Branch:* `feature/blog-admin-cache-invalidation`
+
+🎉 **SPRINT 3 CONCLUÍDA COM SUCESSO!** Componentização reativa com Livewire 3, Service Pattern (`PostService`), navegação por slugs amigáveis e invalidação automática de cache com Redis & Eloquent Observers implementados.
 
